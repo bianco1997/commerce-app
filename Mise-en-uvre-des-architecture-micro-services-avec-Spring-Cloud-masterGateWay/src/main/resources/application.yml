@@ -1,0 +1,31 @@
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:4200"
+            allowedHeaders: '*'
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+      routes:
+        - id: r1
+          uri: lb://CUSTOMER-SERVICE
+          predicates :
+            - Path= /customers/**
+        - id: r2
+          uri: lb://INVENTORY-SERVICE
+          predicates:
+            - Path= /products/**
+        - id: r3
+          uri: lb://billing-service
+          predicates:
+            - Path= /bills/**,/productItems/**
+    discovery:
+      enabled: false
+server:
+  port: 8883
+
